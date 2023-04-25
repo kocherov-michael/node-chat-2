@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
 
-const socket = io("wss://chatwsreact.onrender.com:10000")
+const socket = io("https://chatwsreact.onrender.com")
 
 export default socket

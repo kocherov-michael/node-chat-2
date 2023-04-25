@@ -24,7 +24,10 @@ function App() {
     })
     socket.emit('ROOM:JOIN', obj)
     const {data} = await axios.get(`https://chatwsreact.onrender.com/rooms/${obj.roomId}`)
-    setUsers (data.users)
+    dispatch({
+      type: 'SET_DATA',
+      payload: data
+    })
   }
 
   const setUsers = (users) => {
