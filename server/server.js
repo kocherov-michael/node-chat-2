@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(port, (err) => {
+server.listen(9999, (err) => {
     if(err) {
         throw Error(err)
     }
