@@ -60,10 +60,13 @@
   flex: 1;
   height: calc(100% - 155px);
   overflow: auto;
+  margin-right: -20px;
 }
 
 .message {
   margin-bottom: 20px;
+  padding-left: 0;
+  padding-right: 40px;
 }
 
 .message p {
@@ -105,4 +108,21 @@
 .chat-messages form textarea {
   width: 100%;
   margin-bottom: 10px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-self {
+  align-self: flex-end;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.message-self.message p {
+  background-color: #048314;
+}
+.message-self.message div {
+  text-align: right;
 }

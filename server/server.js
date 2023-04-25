@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
             console.log('users',users)
             socket.broadcast.to(roomId).emit('ROOM:SET_USERS', users)
         } catch (err) {
-            throw Error(err)
+            console.log(err)
         }
     })
     socket.on('ROOM:NEW_MESSAGE', ({roomId, userName, text}) => {
@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
             rooms.get(roomId).get('messages').push(obj)
             socket.broadcast.to(roomId).emit('ROOM:NEW_MESSAGE', obj)
         } catch (err) {
-            throw Error(err)
+            console.log(err)
         }
     })
 
@@ -74,7 +74,7 @@ io.on('connection', (socket) => {
                     console.log('users',users)
                     socket.broadcast.to(roomId).emit('ROOM:SET_USERS', users)
                 } catch (err) {
-                    throw Error(err)
+                    console.log(err)
                 }
             }
         })

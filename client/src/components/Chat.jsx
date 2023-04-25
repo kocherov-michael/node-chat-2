@@ -34,7 +34,7 @@ function Chat({ users = [], messages = [], userName = '', roomId = '', onAddMess
       <div className="chat-messages">
         <div ref={messagesRef} className="messages">
           {messages.map((message, index) => (
-            <div className="message" key={index}>
+            <div className={`message${userName === message.userName ? ' message-self' : ''}`} key={index}>
               <p>{message.text}</p>
               <div>
                 <span>{message.userName}</span>
