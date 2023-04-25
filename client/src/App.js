@@ -5,9 +5,6 @@ import socket from './socket'
 import reducer from './reducer';
 import Chat from './components/Chat';
 
-// socket.on('ROOM:JOINED', (users) => {
-//   console.log('Новый пользователь', users)
-// })
 
 function App() {
   const [state, dispatch] = useReducer(reducer, {
@@ -31,22 +28,32 @@ function App() {
   }
 
   const setUsers = (users) => {
-    console.log('кто-то ушёл', users)
     dispatch({
       type: 'SET_USERS',
       payload: users
     })
   }
 
+  const addMessage = (message) => {
+    dispatch({
+      type: 'NEW_MESSAGE',
+      payload: message,
+    });
+  };
+
   useEffect(() => {
-    console.log('useEffect')
-    // socket.on('ROOM:JOINED', setUsers)
     socket.on('ROOM:SET_USERS', setUsers)
+    socket.on('ROOM:NEW_MESSAGE', message => {
+      dispatch({
+        type: 'NEW_MESSAGE',
+        payload: message
+      })
+    })
   }, [])
   return (
     <div className="wrapper">
       {!state.joined ? <JoinBlock onLogin={onLogin} /> : 
-      <Chat {...state}/>
+      <Chat {...state} onAddMessage={addMessage}/>
       }
     </div>
   );

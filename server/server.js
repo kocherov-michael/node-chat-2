@@ -13,6 +13,7 @@ const io = require('socket.io')(server, {
 //   app.use(express.urlencoded({extended: true}))
 console.log(path.join(__dirname, '../client/build'))
 app.use('/', express.static(path.join(__dirname, '../client/build/')))
+// app.use('/chat', express.static(path.join(__dirname, '../client/build/')))
 const rooms = new Map()
 app.get('/rooms/:id', (req, res) => {
     const roomId = req.params.id
@@ -43,23 +44,38 @@ app.post('/rooms' , (req, res) => {
 io.on('connection', (socket) => {
     console.log('user connected', socket.id)
     socket.on('ROOM:JOIN', ({roomId, userName}) => {
-        console.log('roomId', roomId)
-        socket.join(roomId);
-        // console.log('socket', socket)
-        rooms.get(roomId).get('users').set(socket.id, userName)
-        const users = [...rooms.get(roomId).get('users').values()]
-        console.log('users',users)
-        // socket.to(roomId).emit('ROOM:JOINED', users)
-        socket.broadcast.to(roomId).emit('ROOM:SET_USERS', users)
+        try {
+
+            socket.join(roomId);
+            rooms.get(roomId).get('users').set(socket.id, userName)
+            const users = [...rooms.get(roomId).get('users').values()]
+            console.log('users',users)
+            socket.broadcast.to(roomId).emit('ROOM:SET_USERS', users)
+        } catch (err) {
+            throw Error(err)
+        }
+    })
+    socket.on('ROOM:NEW_MESSAGE', ({roomId, userName, text}) => {
+        try {
+            const obj = { userName, text }
+            rooms.get(roomId).get('messages').push(obj)
+            socket.broadcast.to(roomId).emit('ROOM:NEW_MESSAGE', obj)
+        } catch (err) {
+            throw Error(err)
+        }
     })
 
     socket.on('disconnect', () => {
         console.log('disconnected')
         rooms.forEach((value, roomId) => {
             if( value.get('users').delete(socket.id)) {
-                const users = [...value.get('users').values()]
-                console.log('users',users)
-                socket.broadcast.to(roomId).emit('ROOM:SET_USERS', users)
+                try {
+                    const users = [...value.get('users').values()]
+                    console.log('users',users)
+                    socket.broadcast.to(roomId).emit('ROOM:SET_USERS', users)
+                } catch (err) {
+                    throw Error(err)
+                }
             }
         })
     })
