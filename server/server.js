@@ -1,6 +1,6 @@
 const express = require('express')
 const path = require('path')
-const port = process.env.PORT || 9999
+const port = process.env.PORT || 10000
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server, {
@@ -11,8 +11,8 @@ const io = require('socket.io')(server, {
 //   app.use(bodyParser.json())
   app.use(express.json())
 //   app.use(express.urlencoded({extended: true}))
-console.log(path.join(__dirname, '../client/build'))
-app.use('/', express.static(path.join(__dirname, '../client/build/')))
+// console.log(path.join(__dirname, '../client/build'))
+// app.use('/', express.static(path.join(__dirname, '../client/build/')))
 // app.use('/chat', express.static(path.join(__dirname, '../client/build/')))
 const rooms = new Map()
 app.get('/rooms/:id', (req, res) => {
@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(9999, (err) => {
+server.listen(port, (err) => {
     if(err) {
         throw Error(err)
     }
