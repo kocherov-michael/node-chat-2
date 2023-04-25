@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const cors = require('cors')
 const port = process.env.PORT || 10000
 const app = express()
 const server = require('http').Server(app)
@@ -9,6 +10,7 @@ const io = require('socket.io')(server, {
     }
   })
 //   app.use(bodyParser.json())
+app.use(cors({origin: "*"}))
   app.use(express.json())
 //   app.use(express.urlencoded({extended: true}))
 // console.log(path.join(__dirname, '../client/build'))

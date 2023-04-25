@@ -17,7 +17,7 @@ function JoinBlock({onLogin}) {
             userName
         }
         setIsLoading(true)
-        await axios.post('/rooms', obj)
+        await axios.post('https://chatwsreact.onrender.com/rooms', obj)
         onLogin(obj)
         setIsLoading(false)
     }
